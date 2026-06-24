@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Root Agent — Kubernetes Healing Agent</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+      --yellow: #d29922;
+      --red: #f85149;
+      --orange: #e3b341;
+      --purple: #bc8cff;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Layout ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header svg { flex-shrink: 0; }
+
+    header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    header .tagline {
+      color: var(--muted);
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    header .spacer { flex: 1; }
+
+    .main {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      height: calc(100vh - 56px);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sidebar-header h2 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .run-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .run-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .run-item:hover { background: var(--surface2); }
+    .run-item.active { background: var(--surface2); border-left: 3px solid var(--accent); }
+
+    .run-item-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .run-item-summary {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .run-item-meta {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      gap: 8px;
+    }
+
+    /* ── Trigger form ── */
+    .trigger-form {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .trigger-form h3 { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+
+    .trigger-form textarea,
+    .trigger-form input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 8px 10px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 8px;
+    }
+
+    .trigger-form textarea:focus,
+    .trigger-form input:focus { border-color: var(--accent); }
+
+    .trigger-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    /* ── Main panel ── */
+    .detail {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      gap: 12px;
+    }
+
+    .empty-state svg { opacity: 0.3; }
+    .empty-state p { font-size: 15px; }
+
+    /* ── Run detail ── */
+    .run-detail {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .run-detail-header {
+      margin-bottom: 20px;
+    }
+
+    .run-detail-header h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .run-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .meta-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Status badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge-pending    { background: rgba(139,148,158,0.15); color: var(--muted); }
+    .badge-pending .badge-dot { background: var(--muted); }
+
+    .badge-running    { background: rgba(88,166,255,0.15); color: var(--accent); }
+    .badge-running .badge-dot { background: var(--accent); animation: pulse 1s infinite; }
+
+    .badge-awaiting_approval { background: rgba(210,153,34,0.15); color: var(--yellow); }
+    .badge-awaiting_approval .badge-dot { background: var(--yellow); animation: pulse 1s infinite; }
+
+    .badge-completed  { background: rgba(63,185,80,0.15); color: var(--green); }
+    .badge-completed .badge-dot { background: var(--green); }
+
+    .badge-failed     { background: rgba(248,81,73,0.15); color: var(--red); }
+    .badge-failed .badge-dot { background: var(--red); }
+
+    .badge-cancelled  { background: rgba(139,148,158,0.15); color: var(--muted); }
+    .badge-cancelled .badge-dot { background: var(--muted); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-body { padding: 16px; }
+
+    /* ── Diagnosis ── */
+    .diagnosis-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    /* ── Approval gate ── */
+    .approval-gate {
+      background: rgba(210,153,34,0.08);
+      border: 1px solid rgba(210,153,34,0.35);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .approval-gate h3 {
+      color: var(--yellow);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .approval-gate .fix-reason {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .approval-gate pre {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 12px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .approval-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-primary { background: var(--accent); color: #0d1117; }
+    .btn-danger  { background: var(--red);    color: #fff; }
+    .btn-ghost   { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-sm      { padding: 5px 12px; font-size: 12px; }
+
+    /* ── Tool trace ── */
+    .tool-trace { display: flex; flex-direction: column; gap: 8px; }
+
+    .tool-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .tool-item-header {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .tool-item-header:hover { background: rgba(255,255,255,0.03); }
+
+    .tool-name {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .tool-arrow {
+      margin-left: auto;
+      color: var(--muted);
+      transition: transform 0.15s;
+      font-size: 11px;
+    }
+
+    .tool-item.open .tool-arrow { transform: rotate(90deg); }
+
+    .tool-item-body {
+      display: none;
+      padding: 0 14px 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tool-item.open .tool-item-body { display: block; }
+
+    .tool-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin: 10px 0 4px;
+    }
+
+    .tool-code {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 200px;
+      overflow-y: auto;
+      color: var(--text);
+    }
+
+    .tool-error { border-color: rgba(248,81,73,0.4); }
+    .tool-error .tool-code { color: var(--red); }
+
+    /* ── Error box ── */
+    .error-box {
+      background: rgba(248,81,73,0.08);
+      border: 1px solid rgba(248,81,73,0.3);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* ── Polling indicator ── */
+    .polling-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .polling-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    /* ── Cluster health ── */
+    .cluster-panel {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .cluster-panel h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cluster-panel .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .cluster-stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .cluster-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .cluster-stat .val {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .cluster-stat .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .val-green  { color: var(--green); }
+    .val-red    { color: var(--red); }
+    .val-yellow { color: var(--yellow); }
+    .val-accent { color: var(--accent); }
+    .val-muted  { color: var(--muted); }
+
+    .unhealthy-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .unhealthy-table th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .unhealthy-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .unhealthy-table tr:last-child td { border-bottom: none; }
+    .unhealthy-table tr:hover td { background: var(--surface2); }
+
+    .phase-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .phase-Running   { background: rgba(63,185,80,0.15);  color: var(--green); }
+    .phase-Pending   { background: rgba(210,153,34,0.15); color: var(--yellow); }
+    .phase-Failed    { background: rgba(248,81,73,0.15);  color: var(--red); }
+    .phase-Unknown   { background: rgba(139,148,158,0.15);color: var(--muted); }
+
+    .cluster-error {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <circle cx="14" cy="14" r="13" stroke="#58a6ff" stroke-width="1.5"/>
+    <path d="M9 14 L14 9 L19 14 L14 19 Z" fill="#58a6ff" opacity="0.8"/>
+    <circle cx="14" cy="14" r="3" fill="#58a6ff"/>
+  </svg>
+  <h1>Root Agent</h1>
+  <span class="tagline">Autonomous Kubernetes Healing Agent</span>
+  <div class="spacer"></div>
+  <span class="polling-indicator" id="pollingIndicator" style="display:none">
+    <span class="polling-dot"></span> Live
+  </span>
+</header>
+
+<div class="main">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Runs</h2>
+      <button class="btn btn-ghost btn-sm" onclick="loadHistory()">↻ Refresh</button>
+    </div>
+
+    <div class="run-list" id="runList">
+      <div style="padding:24px;text-align:center;color:var(--muted);font-size:13px">Loading runs…</div>
+    </div>
+
+    <!-- Trigger form -->
+    <div class="trigger-form">
+      <h3>Trigger New Analysis</h3>
+      <textarea id="alertSummary" rows="3" placeholder="Describe the alert or symptom…"></textarea>
+      <div class="row">
+        <input id="namespace" placeholder="namespace (optional)" />
+        <input id="cluster" placeholder="cluster (optional)" />
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="triggerRun()">▶ Analyze</button>
+    </div>
+  </aside>
+
+  <!-- ── Detail panel ── -->
+  <section class="detail" id="detailPanel">
+    <div class="cluster-panel" id="clusterPanel">
+      <h2>Cluster Health</h2>
+      <p class="subtitle" id="clusterSubtitle">Loading…</p>
+      <div class="cluster-stats" id="clusterStats">
+        <div class="cluster-stat"><div class="val val-muted">—</div><div class="lbl">Pods Running</div></div>
+        <div class="cluster-stat"><div class="val val-muted">—</div><div class="lbl">Pods Failing</div></div>
+        <div class="cluster-stat"><div class="val val-muted">—</div><div class="lbl">Restarts (1h)</div></div>
+        <div class="cluster-stat"><div class="val val-muted">—</div><div class="lbl">Deployments OK</div></div>
+        <div class="cluster-stat"><div class="val val-muted">—</div><div class="lbl">Nodes Ready</div></div>
+      </div>
+      <div class="card" id="unhealthyCard" style="display:none">
+        <div class="card-header">⚠ Unhealthy Pods</div>
+        <div class="card-body" style="padding:0">
+          <table class="unhealthy-table" id="unhealthyTable"></table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const API  = '';               // same origin
+  const PROM = 'http://localhost:9090';  // Prometheus
+  let selectedRunId = null;
+  let pollInterval  = null;
+  let clusterInterval = null;
+  let allRuns = [];
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+
+  function statusBadge(status) {
+    const labels = {
+      pending: 'Pending',
+      running: 'Running',
+      awaiting_approval: 'Awaiting Approval',
+      completed: 'Completed',
+      failed: 'Failed',
+      cancelled: 'Cancelled',
+    };
+    return `<span class="badge badge-${status}"><span class="badge-dot"></span>${labels[status] || status}</span>`;
+  }
+
+  function timeAgo(iso) {
+    const d = new Date(iso);
+    const s = Math.floor((Date.now() - d) / 1000);
+    if (s < 60) return `${s}s ago`;
+    if (s < 3600) return `${Math.floor(s/60)}m ago`;
+    if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+    return d.toLocaleDateString();
+  }
+
+  function fmt(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleString();
+  }
+
+  function duration(run) {
+    if (!run.completed_at) return '—';
+    const ms = new Date(run.completed_at) - new Date(run.created_at);
+    return `${(ms/1000).toFixed(1)}s`;
+  }
+
+  async function api(path, opts) {
+    const r = await fetch(API + path, opts);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }
+
+  // ── History ───────────────────────────────────────────────────────────────
+
+  async function loadHistory() {
+    try {
+      allRuns = await api('/agent/history?limit=50');
+      renderRunList();
+    } catch(e) {
+      document.getElementById('runList').innerHTML =
+        `<div style="padding:16px;color:var(--red);font-size:13px">Failed to load runs: ${e.message}</div>`;
+    }
+  }
+
+  function renderRunList() {
+    const el = document.getElementById('runList');
+    if (!allRuns.length) {
+      el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px">No runs yet. Trigger an analysis below.</div>';
+      return;
+    }
+    el.innerHTML = allRuns.map(r => `
+      <div class="run-item ${r.run_id === selectedRunId ? 'active' : ''}"
+           onclick="selectRun('${r.run_id}')">
+        <div class="run-item-top">
+          ${statusBadge(r.status)}
+        </div>
+        <div class="run-item-summary">${r.alert_summary}</div>
+        <div class="run-item-meta">
+          <span>${timeAgo(r.created_at)}</span>
+          ${r.namespace ? `<span>ns:${r.namespace}</span>` : ''}
+          ${r.cluster ? `<span>${r.cluster}</span>` : ''}
+          ${r.llm_steps ? `<span>${r.llm_steps} LLM steps</span>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── Select & poll ─────────────────────────────────────────────────────────
+
+  async function selectRun(runId) {
+    selectedRunId = runId;
+    renderRunList();
+    stopClusterPolling();
+    hideClusterPanel();
+    await loadRunDetail(runId);
+    startPolling(runId);
+  }
+
+  function startPolling(runId) {
+    stopPolling();
+    document.getElementById('pollingIndicator').style.display = 'inline-flex';
+    pollInterval = setInterval(async () => {
+      if (selectedRunId !== runId) { stopPolling(); return; }
+      const run = await api(`/agent/runs/${runId}`).catch(() => null);
+      if (!run) return;
+      // Update sidebar entry
+      const idx = allRuns.findIndex(r => r.run_id === runId);
+      if (idx >= 0) { allRuns[idx] = {...allRuns[idx], ...run}; }
+      renderRunList();
+      renderDetail(run);
+      // Stop polling when terminal
+      if (['completed','failed','cancelled'].includes(run.status)) stopPolling();
+    }, 3000);
+  }
+
+  function stopPolling() {
+    if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+    document.getElementById('pollingIndicator').style.display = 'none';
+  }
+
+  async function loadRunDetail(runId) {
+    try {
+      const run = await api(`/agent/runs/${runId}`);
+      renderDetail(run);
+    } catch(e) {
+      document.getElementById('detailPanel').innerHTML =
+        `<div class="run-detail"><div class="error-box">Failed to load run: ${e.message}</div></div>`;
+    }
+  }
+
+  // ── Render detail ─────────────────────────────────────────────────────────
+
+  function renderDetail(run) {
+    const isActive = ['pending','running','awaiting_approval'].includes(run.status);
+
+    // Build tool trace (pair calls with results)
+    const resultMap = {};
+    (run.tool_results || []).forEach(r => { resultMap[r.tool_use_id] = r; });
+
+    const traceHtml = (run.tool_calls || []).map((call, i) => {
+      const result = resultMap[call.tool_use_id];
+      const hasError = result?.is_error;
+      const inputStr = JSON.stringify(call.input, null, 2);
+      const outputStr = result
+        ? (typeof result.output === 'string' ? result.output : JSON.stringify(result.output, null, 2))
+        : '(pending…)';
+
+      return `
+        <div class="tool-item ${hasError ? 'tool-error' : ''}" id="tool-${i}">
+          <div class="tool-item-header" onclick="toggleTool(${i})">
+            <span style="color:var(--muted);font-size:11px;font-family:monospace">${String(i+1).padStart(2,'0')}</span>
+            <span class="tool-name">${call.name}</span>
+            ${hasError ? '<span style="color:var(--red);font-size:11px">ERROR</span>' : ''}
+            <span style="color:var(--muted);font-size:11px;margin-left:4px">${timeAgo(call.timestamp)}</span>
+            <span class="tool-arrow">▶</span>
+          </div>
+          <div class="tool-item-body">
+            <div class="tool-section-label">Input</div>
+            <pre class="tool-code">${escHtml(inputStr)}</pre>
+            <div class="tool-section-label">Output</div>
+            <pre class="tool-code ${hasError ? 'tool-error' : ''}">${escHtml(outputStr)}</pre>
+          </div>
+        </div>`;
+    }).join('');
+
+    const html = `
+      <div class="run-detail">
+        <!-- Header -->
+        <div class="run-detail-header">
+          <h2>${escHtml(run.alert_summary)}</h2>
+          <div class="run-meta-row">
+            ${statusBadge(run.status)}
+            ${run.namespace ? `<span class="meta-chip">ns: ${run.namespace}</span>` : ''}
+            ${run.cluster   ? `<span class="meta-chip">${run.cluster}</span>` : ''}
+            <span class="meta-chip">ID: ${run.run_id.slice(0,8)}…</span>
+            ${isActive ? `<span class="polling-indicator"><span class="polling-dot"></span>Polling</span>` : ''}
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-value">${run.llm_steps}</div>
+            <div class="stat-label">LLM Steps</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${(run.tool_calls||[]).length}</div>
+            <div class="stat-label">Tool Calls</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${duration(run)}</div>
+            <div class="stat-label">Duration</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${(run.tool_results||[]).filter(r=>r.is_error).length}</div>
+            <div class="stat-label">Tool Errors</div>
+          </div>
+        </div>
+
+        <!-- Error -->
+        ${run.error_message ? `<div class="error-box">⚠ ${escHtml(run.error_message)}</div>` : ''}
+
+        <!-- Approval gate -->
+        ${run.status === 'awaiting_approval' && run.pending_fix ? `
+          <div class="approval-gate">
+            <h3>⚠ Human Approval Required</h3>
+            <p class="fix-reason">${escHtml(run.pending_fix.reason || 'No reason provided.')}</p>
+            <pre>${escHtml(JSON.stringify(run.pending_fix.patch_body || run.pending_fix, null, 2))}</pre>
+            <div class="approval-buttons">
+              <button class="btn btn-primary" onclick="approveRun('${run.run_id}', true)">✓ Approve & Apply</button>
+              <button class="btn btn-danger"  onclick="approveRun('${run.run_id}', false)">✗ Reject</button>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Diagnosis -->
+        ${run.diagnosis ? `
+          <div class="card">
+            <div class="card-header">🔍 Diagnosis</div>
+            <div class="card-body">
+              <div class="diagnosis-text">${escHtml(run.diagnosis)}</div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Fix applied -->
+        ${run.fix_applied ? `
+          <div class="card">
+            <div class="card-header">✅ Fix Applied</div>
+            <div class="card-body">
+              <div class="diagnosis-text">${escHtml(run.fix_applied)}</div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Tool trace -->
+        ${(run.tool_calls||[]).length ? `
+          <div class="card">
+            <div class="card-header">🔧 Tool Trace <span style="font-weight:400;margin-left:4px">(${(run.tool_calls||[]).length} calls)</span></div>
+            <div class="card-body" style="padding:12px">
+              <div class="tool-trace">${traceHtml}</div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Timestamps -->
+        <div class="card">
+          <div class="card-header">⏱ Timeline</div>
+          <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:2px">CREATED</div><div style="font-size:13px">${fmt(run.created_at)}</div></div>
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:2px">UPDATED</div><div style="font-size:13px">${fmt(run.updated_at)}</div></div>
+            <div><div style="font-size:11px;color:var(--muted);margin-bottom:2px">COMPLETED</div><div style="font-size:13px">${fmt(run.completed_at)}</div></div>
+          </div>
+        </div>
+
+      </div>`;
+
+    document.getElementById('detailPanel').innerHTML = html;
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────────
+
+  function toggleTool(i) {
+    document.getElementById(`tool-${i}`).classList.toggle('open');
+  }
+
+  async function triggerRun() {
+    const summary = document.getElementById('alertSummary').value.trim();
+    if (!summary) { alert('Please enter an alert summary.'); return; }
+    const namespace = document.getElementById('namespace').value.trim() || null;
+    const cluster   = document.getElementById('cluster').value.trim()   || null;
+
+    try {
+      const run = await api('/agent/analyze', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({alert_summary: summary, namespace, cluster}),
+      });
+      document.getElementById('alertSummary').value = '';
+      allRuns.unshift(run);
+      renderRunList();
+      await selectRun(run.run_id);
+    } catch(e) {
+      alert(`Failed to trigger run: ${e.message}`);
+    }
+  }
+
+  async function approveRun(runId, approved) {
+    try {
+      await api(`/agent/approve/${runId}`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({approved, approver: 'dashboard'}),
+      });
+      await loadRunDetail(runId);
+      if (approved) startPolling(runId);
+    } catch(e) {
+      alert(`Approval failed: ${e.message}`);
+    }
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // ── Cluster Health ────────────────────────────────────────────────────────
+
+  async function queryProm(expr) {
+    const url = `${PROM}/api/v1/query?query=${encodeURIComponent(expr)}`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`Prometheus ${r.status}`);
+    const j = await r.json();
+    return j.data.result;
+  }
+
+  async function scalarProm(expr, fallback = '—') {
+    try {
+      const res = await queryProm(expr);
+      if (!res.length) return fallback;
+      const v = parseFloat(res[0].value[1]);
+      return isNaN(v) ? fallback : Math.round(v);
+    } catch { return fallback; }
+  }
+
+  function showClusterPanel() {
+    document.getElementById('clusterPanel').style.display = '';
+  }
+
+  function hideClusterPanel() {
+    document.getElementById('clusterPanel').style.display = 'none';
+  }
+
+  async function loadClusterHealth() {
+    const subtitle = document.getElementById('clusterSubtitle');
+    const statsEl  = document.getElementById('clusterStats');
+
+    const [running, failing, restarts, deplOK, nodes, unhealthyPods] = await Promise.all([
+      scalarProm('count(kube_pod_status_phase{phase="Running"})'),
+      scalarProm('count(kube_pod_status_phase{phase!="Running",phase!="Succeeded"})'),
+      scalarProm('floor(sum(increase(kube_pod_container_status_restarts_total[1h])))'),
+      scalarProm(
+        'count(kube_deployment_status_replicas_available >= kube_deployment_spec_replicas > 0)'
+      ),
+      scalarProm('count(kube_node_status_condition{condition="Ready",status="true"})'),
+      queryProm('kube_pod_status_phase{phase!="Running",phase!="Succeeded"}').catch(() => []),
+    ]);
+
+    const failN = typeof failing === 'number' ? failing : 0;
+
+    statsEl.innerHTML = `
+      <div class="cluster-stat"><div class="val val-green">${running}</div><div class="lbl">Pods Running</div></div>
+      <div class="cluster-stat"><div class="val ${failN > 0 ? 'val-red' : 'val-green'}">${failing}</div><div class="lbl">Pods Failing</div></div>
+      <div class="cluster-stat"><div class="val ${typeof restarts === 'number' && restarts > 10 ? 'val-yellow' : 'val-accent'}">${restarts}</div><div class="lbl">Restarts (1h)</div></div>
+      <div class="cluster-stat"><div class="val val-green">${deplOK}</div><div class="lbl">Deployments OK</div></div>
+      <div class="cluster-stat"><div class="val val-accent">${nodes}</div><div class="lbl">Nodes Ready</div></div>
+    `;
+
+    subtitle.textContent = `Last refreshed ${new Date().toLocaleTimeString()}`;
+
+    const unhealthyCard  = document.getElementById('unhealthyCard');
+    const unhealthyTable = document.getElementById('unhealthyTable');
+
+    if (unhealthyPods.length) {
+      unhealthyCard.style.display = '';
+      unhealthyTable.innerHTML = `
+        <thead><tr>
+          <th>Pod</th><th>Namespace</th><th>Phase</th>
+        </tr></thead>
+        <tbody>
+          ${unhealthyPods.map(r => `
+            <tr>
+              <td style="font-family:monospace">${escHtml(r.metric.pod || '—')}</td>
+              <td>${escHtml(r.metric.namespace || '—')}</td>
+              <td><span class="phase-badge phase-${r.metric.phase}">${escHtml(r.metric.phase)}</span></td>
+            </tr>
+          `).join('')}
+        </tbody>`;
+    } else {
+      unhealthyCard.style.display = 'none';
+    }
+  }
+
+  function startClusterPolling() {
+    loadClusterHealth();
+    if (clusterInterval) clearInterval(clusterInterval);
+    clusterInterval = setInterval(loadClusterHealth, 30000);
+  }
+
+  function stopClusterPolling() {
+    if (clusterInterval) { clearInterval(clusterInterval); clusterInterval = null; }
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+  loadHistory();
+  setInterval(loadHistory, 15000);  // refresh sidebar every 15s
+  startClusterPolling();            // live cluster health on default view
+</script>
+</body>
+</html>

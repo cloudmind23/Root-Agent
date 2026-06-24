@@ -1,0 +1,30 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    project: root-agent
+
+scrape_configs:
+  # Root Agent — exposes /metrics via prometheus_client
+  - job_name: root_agent
+    static_configs:
+      - targets: ["host.docker.internal:8082"]
+    metrics_path: /metrics
+    scrape_interval: 10s
+
+  # Redis — requires redis_exporter sidecar (oliver006/redis_exporter)
+  - job_name: redis
+    static_configs:
+      - targets: ["redis-exporter:9121"]
+
+  # kube-state-metrics — cluster-state metrics (pods, deployments, nodes, etc.)
+  - job_name: kube_state_metrics
+    static_configs:
+      - targets: ["host.docker.internal:9093"]
+    metrics_path: /metrics
+    scrape_interval: 15s
+
+  # Prometheus self-scrape
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
