@@ -1,0 +1,46 @@
+<svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="520" fill="#0a0e1a"/>
+  <text x="400" y="52" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="24" font-weight="700" fill="#ffffff">Built With Production-Grade Tech</text>
+  <text x="400" y="78" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0" letter-spacing="2">ROOT-AGENT STACK</text>
+  <line x1="100" y1="94" x2="700" y2="94" stroke="#1e2d4a" stroke-width="1"/>
+  <rect x="48" y="112" width="162" height="110" rx="10" fill="#1a1226" stroke="#6c3faa" stroke-width="1.5"/>
+  <text x="129" y="152" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="32">🤖</text>
+  <text x="129" y="180" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="14" font-weight="700" fill="#ce93d8">Claude Sonnet</text>
+  <text x="129" y="200" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">Reasoning Brain</text>
+  <text x="129" y="216" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Anthropic</text>
+  <rect x="224" y="112" width="162" height="110" rx="10" fill="#0f1a2e" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="305" y="152" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="32">🧩</text>
+  <text x="305" y="180" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="14" font-weight="700" fill="#64b5f6">LangGraph</text>
+  <text x="305" y="200" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">Agent Loop</text>
+  <text x="305" y="216" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">StateGraph Orchestration</text>
+  <rect x="400" y="112" width="162" height="110" rx="10" fill="#0a1a16" stroke="#00695c" stroke-width="1.5"/>
+  <text x="481" y="152" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="32">⚡</text>
+  <text x="481" y="180" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="14" font-weight="700" fill="#4db6ac">FastAPI</text>
+  <text x="481" y="200" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">API + Dashboard</text>
+  <text x="481" y="216" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Async Python</text>
+  <rect x="576" y="112" width="162" height="110" rx="10" fill="#0d1a2e" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="657" y="152" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="32">☸️</text>
+  <text x="657" y="180" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="14" font-weight="700" fill="#90caf9">K8s Client</text>
+  <text x="657" y="200" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">Real kubectl</text>
+  <text x="657" y="216" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Python Client</text>
+  <rect x="136" y="244" width="162" height="110" rx="10" fill="#1a0a0a" stroke="#b71c1c" stroke-width="1.5"/>
+  <text x="217" y="284" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="32">🗃️</text>
+  <text x="217" y="312" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="14" font-weight="700" fill="#ef9a9a">Redis</text>
+  <text x="217" y="332" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">State + Audit Log</text>
+  <text x="217" y="348" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">7-day TTL</text>
+  <rect x="312" y="244" width="162" height="110" rx="10" fill="#1a1000" stroke="#e65100" stroke-width="1.5"/>
+  <text x="393" y="284" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="32">📊</text>
+  <text x="393" y="312" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffcc80">Prometheus</text>
+  <text x="393" y="332" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">Observability</text>
+  <text x="393" y="348" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Metrics + Scraping</text>
+  <rect x="488" y="244" width="162" height="110" rx="10" fill="#0a1525" stroke="#0277bd" stroke-width="1.5"/>
+  <text x="569" y="284" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="32">🐳</text>
+  <text x="569" y="312" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="14" font-weight="700" fill="#81d4fa">Docker + Compose</text>
+  <text x="569" y="332" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">One-command deploy</text>
+  <text x="569" y="348" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Production Ready</text>
+  <line x1="100" y1="376" x2="700" y2="376" stroke="#1e2d4a" stroke-width="1"/>
+  <rect x="200" y="392" width="400" height="52" rx="10" fill="#0a1f0a" stroke="#43a047" stroke-width="1.5"/>
+  <text x="400" y="416" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="13" font-weight="700" fill="#69f0ae">✅ Human-in-the-Loop · Every Fix Needs Your Approval</text>
+  <text x="400" y="436" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0">AI proposes · Humans decide · Cluster stays safe</text>
+  <text x="400" y="490" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#4a5568">#AIAgents  #Kubernetes  #DevOps  #LangGraph  #Claude  #FastAPI</text>
+</svg>

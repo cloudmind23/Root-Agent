@@ -1,0 +1,51 @@
+<svg viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="900" fill="#0a0e1a"/>
+  <text x="400" y="54" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="26" font-weight="700" fill="#ffffff">Root-Agent</text>
+  <text x="400" y="82" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="13" fill="#7b8db0" letter-spacing="3">AUTONOMOUS KUBERNETES HEALING</text>
+  <line x1="120" y1="98" x2="680" y2="98" stroke="#1e2d4a" stroke-width="1"/>
+  <rect x="80" y="116" width="640" height="72" rx="10" fill="#1a0a0a" stroke="#e53935" stroke-width="1.5"/>
+  <text x="116" y="148" font-family="'Segoe UI', system-ui, sans-serif" font-size="22">🔴</text>
+  <text x="156" y="148" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ff5252">CrashLoopBackOff hits production</text>
+  <text x="156" y="170" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0">Alert fires — Root-Agent kicks off the investigation loop</text>
+  <line x1="400" y1="188" x2="400" y2="210" stroke="#2a3f6b" stroke-width="2"/>
+  <polygon points="400,218 394,206 406,206" fill="#2a3f6b"/>
+  <rect x="80" y="220" width="640" height="72" rx="10" fill="#0d1929" stroke="#1e3a6b" stroke-width="1.5"/>
+  <text x="116" y="252" font-family="'Segoe UI', system-ui, sans-serif" font-size="22">🧠</text>
+  <text x="156" y="252" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" font-weight="700" fill="#4fc3f7">Claude Sonnet spins up the agent loop</text>
+  <text x="156" y="274" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0">LangGraph StateGraph begins multi-step reasoning</text>
+  <line x1="400" y1="292" x2="400" y2="314" stroke="#2a3f6b" stroke-width="2"/>
+  <polygon points="400,322 394,310 406,310" fill="#2a3f6b"/>
+  <rect x="80" y="324" width="640" height="72" rx="10" fill="#0d1929" stroke="#1e3a6b" stroke-width="1.5"/>
+  <text x="116" y="356" font-family="'Segoe UI', system-ui, sans-serif" font-size="22">📋</text>
+  <text x="156" y="356" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Fetches logs → describes resources → pulls events</text>
+  <text x="156" y="378" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0">Kubernetes Python Client — real kubectl under the hood</text>
+  <line x1="400" y1="396" x2="400" y2="418" stroke="#2a3f6b" stroke-width="2"/>
+  <polygon points="400,426 394,414 406,414" fill="#2a3f6b"/>
+  <rect x="80" y="428" width="640" height="72" rx="10" fill="#0d1929" stroke="#1e3a6b" stroke-width="1.5"/>
+  <text x="116" y="460" font-family="'Segoe UI', system-ui, sans-serif" font-size="22">📚</text>
+  <text x="156" y="460" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Searches internal runbooks</text>
+  <text x="156" y="482" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0">RAG-powered retrieval against your knowledge base</text>
+  <line x1="400" y1="500" x2="400" y2="522" stroke="#2a3f6b" stroke-width="2"/>
+  <polygon points="400,530 394,518 406,518" fill="#2a3f6b"/>
+  <rect x="80" y="532" width="640" height="72" rx="10" fill="#0d1929" stroke="#1e3a6b" stroke-width="1.5"/>
+  <text x="116" y="564" font-family="'Segoe UI', system-ui, sans-serif" font-size="22">🌐</text>
+  <text x="156" y="564" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Web-searches for known fixes</text>
+  <text x="156" y="586" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0">Fallback for unknown errors — scours GitHub, docs, Stack Overflow</text>
+  <line x1="400" y1="604" x2="400" y2="626" stroke="#2a3f6b" stroke-width="2"/>
+  <polygon points="400,634 394,622 406,622" fill="#2a3f6b"/>
+  <rect x="80" y="636" width="640" height="72" rx="10" fill="#0d1929" stroke="#1e3a6b" stroke-width="1.5"/>
+  <text x="116" y="668" font-family="'Segoe UI', system-ui, sans-serif" font-size="22">🩹</text>
+  <text x="156" y="668" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Proposes a precise kubectl patch with reasoning</text>
+  <text x="156" y="690" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0">Conservative, targeted fix — no guessing, full audit trail</text>
+  <line x1="400" y1="708" x2="400" y2="730" stroke="#2a3f6b" stroke-width="2"/>
+  <polygon points="400,738 394,726 406,726" fill="#2a3f6b"/>
+  <rect x="80" y="740" width="640" height="72" rx="10" fill="#0a1f0a" stroke="#43a047" stroke-width="2"/>
+  <text x="116" y="772" font-family="'Segoe UI', system-ui, sans-serif" font-size="22">✅</text>
+  <text x="156" y="772" font-family="'Segoe UI', system-ui, sans-serif" font-size="16" font-weight="700" fill="#69f0ae">Waits for human approval — won't touch a thing without it</text>
+  <text x="156" y="794" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" fill="#7b8db0">human_approved flag · AI proposes, you decide, cluster stays safe</text>
+  <line x1="400" y1="812" x2="400" y2="834" stroke="#2a3f6b" stroke-width="2"/>
+  <polygon points="400,842 394,830 406,830" fill="#2a3f6b"/>
+  <rect x="80" y="844" width="640" height="40" rx="10" fill="#0d1929" stroke="#1e3a6b" stroke-width="1.5"/>
+  <text x="116" y="869" font-family="'Segoe UI', system-ui, sans-serif" font-size="16">📣</text>
+  <text x="148" y="869" font-family="'Segoe UI', system-ui, sans-serif" font-size="13" font-weight="600" fill="#ffffff">Full incident summary posted to Slack  ·  Under 60 seconds</text>
+</svg>

@@ -1,0 +1,76 @@
+<svg viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1976d2"/></marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#43a047"/></marker>
+    <marker id="arr-gray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a5568"/></marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#e53935"/></marker>
+  </defs>
+  <rect width="800" height="560" fill="#0a0e1a"/>
+  <text x="400" y="44" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="22" font-weight="700" fill="#ffffff">How Root-Agent Works</text>
+  <text x="400" y="66" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0" letter-spacing="2">AUTONOMOUS KUBERNETES SELF-HEALING</text>
+  <line x1="80" y1="80" x2="720" y2="80" stroke="#1e2d4a" stroke-width="1"/>
+  <rect x="40" y="96" width="210" height="330" rx="12" fill="#0d1929" stroke="#1976d2" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="145" y="116" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#64b5f6" letter-spacing="1">☸️  K8S CLUSTER</text>
+  <rect x="62" y="126" width="166" height="52" rx="8" fill="#1a0a0a" stroke="#e53935" stroke-width="1.5"/>
+  <text x="145" y="147" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" font-weight="700" fill="#ff5252">🔴 CrashLoopBackOff</text>
+  <text x="145" y="165" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#7b8db0">Pod: api-server-0 · prod</text>
+  <rect x="62" y="192" width="166" height="44" rx="8" fill="#0d1929" stroke="#1e3a6b" stroke-width="1"/>
+  <text x="145" y="212" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#90caf9">📋 Pod Logs</text>
+  <text x="145" y="228" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">stdout / stderr</text>
+  <rect x="62" y="248" width="166" height="44" rx="8" fill="#0d1929" stroke="#1e3a6b" stroke-width="1"/>
+  <text x="145" y="268" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#90caf9">⚡ Cluster Events</text>
+  <text x="145" y="284" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">OOMKilled · BackOff</text>
+  <rect x="62" y="304" width="166" height="44" rx="8" fill="#0d1929" stroke="#1e3a6b" stroke-width="1"/>
+  <text x="145" y="324" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#90caf9">🗂️ Resources</text>
+  <text x="145" y="340" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Deployments · Nodes</text>
+  <rect x="62" y="360" width="166" height="50" rx="8" fill="#0a1f0a" stroke="#43a047" stroke-width="1.5"/>
+  <text x="145" y="382" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="700" fill="#69f0ae">✅ Apply Fix</text>
+  <text x="145" y="398" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#7b8db0">kubectl patch · restart</text>
+  <rect x="296" y="96" width="208" height="330" rx="12" fill="#0f1525" stroke="#4fc3f7" stroke-width="2"/>
+  <text x="400" y="116" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#4fc3f7" letter-spacing="1">🤖  ROOT-AGENT</text>
+  <rect x="316" y="126" width="168" height="52" rx="8" fill="#1a1226" stroke="#6c3faa" stroke-width="1.5"/>
+  <text x="400" y="147" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" font-weight="700" fill="#ce93d8">🧠 Claude Sonnet</text>
+  <text x="400" y="165" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#7b8db0">Reasoning · Tool Use</text>
+  <rect x="316" y="192" width="168" height="44" rx="8" fill="#0f1a2e" stroke="#1565c0" stroke-width="1"/>
+  <text x="400" y="212" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#64b5f6">🧩 LangGraph Loop</text>
+  <text x="400" y="228" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Multi-step orchestration</text>
+  <rect x="316" y="248" width="168" height="44" rx="8" fill="#0a1a16" stroke="#00695c" stroke-width="1"/>
+  <text x="400" y="268" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#4db6ac">⚡ FastAPI</text>
+  <text x="400" y="284" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">API + Operator Dashboard</text>
+  <rect x="316" y="304" width="168" height="44" rx="8" fill="#1a0a0a" stroke="#b71c1c" stroke-width="1"/>
+  <text x="400" y="324" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#ef9a9a">🗃️ Redis</text>
+  <text x="400" y="340" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">State · Audit · History</text>
+  <rect x="316" y="360" width="168" height="50" rx="8" fill="#0a1f0a" stroke="#43a047" stroke-width="2"/>
+  <text x="400" y="380" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="700" fill="#69f0ae">🛡️ HITL Safety Gate</text>
+  <text x="400" y="398" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#7b8db0">human_approved flag</text>
+  <rect x="550" y="96" width="210" height="330" rx="12" fill="#0d1929" stroke="#1e3a6b" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="655" y="116" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#7b8db0" letter-spacing="1">📤  INTEGRATIONS</text>
+  <rect x="572" y="126" width="166" height="52" rx="8" fill="#0d1929" stroke="#1e3a6b" stroke-width="1"/>
+  <text x="655" y="147" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">📣 Slack</text>
+  <text x="655" y="165" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#7b8db0">Incident summaries · Alerts</text>
+  <rect x="572" y="192" width="166" height="44" rx="8" fill="#1a1000" stroke="#e65100" stroke-width="1"/>
+  <text x="655" y="212" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#ffcc80">📊 Prometheus</text>
+  <text x="655" y="228" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Metrics · Observability</text>
+  <rect x="572" y="248" width="166" height="44" rx="8" fill="#0d1929" stroke="#1e3a6b" stroke-width="1"/>
+  <text x="655" y="268" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#ffffff">📚 RAG Runbooks</text>
+  <text x="655" y="284" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">Confluence · Notion · Docs</text>
+  <rect x="572" y="304" width="166" height="44" rx="8" fill="#0d1929" stroke="#1e3a6b" stroke-width="1"/>
+  <text x="655" y="324" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" fill="#ffffff">🌐 Web Search</text>
+  <text x="655" y="340" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">GitHub · Docs · StackOverflow</text>
+  <rect x="572" y="360" width="166" height="50" rx="8" fill="#0a1f0a" stroke="#43a047" stroke-width="1.5"/>
+  <text x="655" y="382" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="700" fill="#69f0ae">👤 Operator Approval</text>
+  <text x="655" y="398" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#7b8db0">One click · Full control</text>
+  <line x1="252" y1="214" x2="294" y2="214" stroke="#1976d2" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <line x1="252" y1="270" x2="294" y2="270" stroke="#1976d2" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <line x1="252" y1="326" x2="294" y2="326" stroke="#1976d2" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <line x1="316" y1="385" x2="230" y2="385" stroke="#43a047" stroke-width="2" marker-end="url(#arr-green)"/>
+  <line x1="506" y1="152" x2="570" y2="152" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arr-gray)"/>
+  <line x1="506" y1="214" x2="570" y2="214" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arr-gray)"/>
+  <line x1="506" y1="270" x2="570" y2="270" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arr-gray)"/>
+  <line x1="506" y1="326" x2="570" y2="326" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arr-gray)"/>
+  <line x1="570" y1="385" x2="486" y2="385" stroke="#43a047" stroke-width="2" marker-end="url(#arr-green)"/>
+  <line x1="145" y1="178" x2="145" y2="190" stroke="#e53935" stroke-width="1.5" marker-end="url(#arr-red)"/>
+  <line x1="80" y1="444" x2="720" y2="444" stroke="#1e2d4a" stroke-width="1"/>
+  <text x="400" y="468" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" font-weight="600" fill="#4fc3f7">Root-Agent  ·  Autonomous K8s Healing  ·  Human-in-the-Loop Safety</text>
+  <text x="400" y="490" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="10" fill="#4a5568">#AIAgents  #Kubernetes  #DevOps  #Claude  #LangGraph  #SRE  #CloudNative</text>
+</svg>
