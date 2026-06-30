@@ -1,4 +1,6 @@
-## The LLM Evaluation Framework
+## The Karpathy-Inspired Framework
+
+The "Karpathy-Inspired" setup popularized by community packages like Forrest Chang's guidelines—differs from standard AI coding tools by replacing ad-hoc prompting with strict, behavioral guardrails. Instead of acting like a naive junior developer that jumps into making unverifiable changes, the project constrains the AI to operate like a cautious, senior-level engineer
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
