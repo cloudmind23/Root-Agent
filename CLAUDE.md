@@ -1,4 +1,4 @@
-# CLAUDE.md
+## The LLM Evaluation Framework
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
